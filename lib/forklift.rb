@@ -1,5 +1,3 @@
-require "forklift/version"
-
 module Forklift
-  # Your code goes here...
+  autoload :VERSION, 'forklift/version'
 end

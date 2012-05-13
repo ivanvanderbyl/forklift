@@ -4,8 +4,8 @@ require File.expand_path('../lib/forklift/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Ivan Vanderbyl"]
   gem.email         = ["ivanvanderbyl@me.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Forklift is a preforking, autoscaling process manager for building background processing applications}
+  gem.summary       = %q{"Unicorn for background processing"}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
