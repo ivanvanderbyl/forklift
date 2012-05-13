@@ -120,7 +120,7 @@ module Forklift
       ppid = master_pid
       init_worker_process(worker)
 
-      logger.info "worker=#{worker.nr} ready"
+      logger.info "worker=#{worker.number} ready"
 
       begin
         nr = 0
@@ -155,7 +155,7 @@ module Forklift
       WORKER_QUEUE_SIGS.each { |sig| trap(sig, nil) }
       trap(:CHLD, 'DEFAULT')
       SIG_QUEUE.clear
-      proc_name "worker[#{worker.nr}]"
+      proc_name "worker[#{worker.number}]"
       START_CTX.clear
       init_self_pipe!
       WORKERS.clear
@@ -188,7 +188,7 @@ module Forklift
       (off = WORKERS.size - worker_processes) == 0 and return
       off < 0 and return spawn_missing_workers
       WORKERS.dup.each_pair { |wpid,w|
-        w.nr >= worker_processes and kill_worker(:QUIT, wpid) rescue nil
+        w.number >= worker_processes and kill_worker(:QUIT, wpid) rescue nil
       }
     end
 
@@ -206,7 +206,7 @@ module Forklift
           next
         end
         next_sleep = 0
-        logger.error "worker=#{worker.nr} PID:#{wpid} timeout " \
+        logger.error "worker=#{worker.number} PID:#{wpid} timeout " \
                      "(#{diff}s > #{@timeout}s), killing"
         kill_worker(:KILL, wpid) # take no prisoners for timeout violations
       end
@@ -266,7 +266,7 @@ module Forklift
           proc_name 'master'
         else
           worker = WORKERS.delete(wpid) and worker.close rescue nil
-          m = "reaped #{status.inspect} worker=#{worker.nr rescue 'unknown'}"
+          m = "reaped #{status.inspect} worker=#{worker.number rescue 'unknown'}"
           status.success? ? logger.info(m) : logger.error(m)
         end
       rescue Errno::ECHILD
