@@ -1,3 +1,17 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
 
-require 'forklift'
+# resolve bin path, ignoring symlinks
+require "pathname"
+bin_file = Pathname.new(__FILE__).realpath
+
+# add self to libpath
+$:.unshift File.expand_path("../../lib", bin_file)
+
+require "bundler"
+Bundler.setup
+
+require "forklift/ui"
+
+# start up the CLI
+Forklift::UI.start
