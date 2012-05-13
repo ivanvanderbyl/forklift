@@ -6,7 +6,6 @@ require 'eventmachine'
 
 module Forklift
   autoload :VERSION, 'forklift/version'
-
   autoload :Master, 'forklift/master'
   autoload :Worker, 'forklift/worker'
 

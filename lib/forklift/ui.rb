@@ -25,7 +25,7 @@ module Forklift
 
     desc :start, "Start master"
     def start
-      Forklift::Master.new.start
+      Forklift::Master.new.start.join
     end
 
     class Remote < Thor
