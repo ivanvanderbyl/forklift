@@ -14,4 +14,9 @@ Gem::Specification.new do |gem|
   gem.name          = "forklift"
   gem.require_paths = ["lib"]
   gem.version       = Forklift::VERSION
+
+  gem.add_dependency 'activesupport', '~> 3.2.0'
+  gem.add_dependency 'thor'
+  gem.add_dependency 'eventmachine'
+  gem.add_dependency 'kgio'
 end

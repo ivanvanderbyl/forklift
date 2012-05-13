@@ -1,3 +1,12 @@
+PATH
+  remote: .
+  specs:
+    forklift (0.0.1)
+      activesupport (~> 3.2.0)
+      eventmachine
+      kgio
+      thor
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -14,7 +23,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 3.2.0)
-  eventmachine
-  kgio
-  thor
+  forklift!
