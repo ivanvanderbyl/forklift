@@ -3,10 +3,10 @@ module Forklift
 
     attr_reader :number
 
-    def initialize(number)
+    def initialize(logger, number)
       @number = number
       @tick = Time.now.to_i
-      puts "Worker #{number} spawned"
+      logger.debug "Worker #{number} spawned"
     end
 
     # worker objects may be compared to just plain Integers

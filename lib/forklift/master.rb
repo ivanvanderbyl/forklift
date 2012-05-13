@@ -37,8 +37,6 @@ module Forklift
       self.worker_processes = 2
       @logger = Logger.new($stdout)
       @timeout = 100
-
-      $0 = "Forklift"
     end
 
     def start
@@ -94,12 +92,16 @@ module Forklift
           logger.info "master done reopening logs"
           kill_each_worker(:USR1)
         when :USR2 # exec binary, stay alive in case something went wrong
-          reexec
+          # reexec
         end
 
       rescue => e
         Forklift.log_error(@logger, "master loop error", e)
       end while true
+
+      stop # gracefully shutdown all workers on our way out
+      logger.info "master complete"
+      unlink_pid_safe(pid) if pid
     end
 
     private
@@ -168,7 +170,7 @@ module Forklift
       worker_nr = -1
       until (worker_nr += 1) == self.worker_processes
         WORKERS.value?(worker_nr) and next
-        worker = Worker.new(worker_nr)
+        worker = Worker.new(logger, worker_nr)
         # before_fork.call(self, worker)
         if pid = fork
           WORKERS[pid] = worker
