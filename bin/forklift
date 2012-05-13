@@ -8,8 +8,8 @@ bin_file = Pathname.new(__FILE__).realpath
 # add self to libpath
 $:.unshift File.expand_path("../../lib", bin_file)
 
-require "bundler"
-Bundler.setup
+# require "bundler"
+# Bundler.setup
 
 require "forklift/ui"
 

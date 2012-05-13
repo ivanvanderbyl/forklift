@@ -126,8 +126,7 @@ module Forklift
         nr = 0
         worker.tick = Time.now.to_i
 
-        logger.debug "Worker loop"
-        sleep 5
+        worker.perform
 
         ppid == Process.ppid or return
 

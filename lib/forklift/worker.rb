@@ -1,11 +1,13 @@
 module Forklift
   class Worker
 
-    attr_reader :number
+    attr_reader :number, :logger
 
     def initialize(logger, number)
+      @i = 0
       @number = number
       @tick = Time.now.to_i
+      @logger = logger
       logger.debug "Worker #{number} spawned"
     end
 
@@ -28,6 +30,12 @@ module Forklift
 
     def close # :nodoc:
       @tmp.close if @tmp
+    end
+
+    def perform
+      @i += 1
+      logger.info "Working #{@i}"
+      sleep 5
     end
   end
 end
