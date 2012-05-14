@@ -34,8 +34,8 @@ module Forklift
 
     def perform
       @i += 1
-      logger.info "Working #{@i}"
-      sleep 5
+      logger.info "[Worker #{number}] Worker loop #{@i}"
+      sleep rand(5)
     end
   end
 end

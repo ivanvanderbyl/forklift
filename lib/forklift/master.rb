@@ -46,6 +46,7 @@ module Forklift
       # Note that signals don't actually get handled until the #join method
       QUEUE_SIGS.each { |sig| trap(sig) { SIG_QUEUE << sig; awaken_master } }
       trap(:CHLD) { awaken_master }
+      self.pid = Pathname.new(START_CTX[:cwd]).join('tmp/pids/forklift.pid')
 
       self.master_pid = $$
 
@@ -105,6 +106,36 @@ module Forklift
     end
 
     private
+
+    # sets the path for the PID file of the master process
+    def pid=(path)
+      if path
+        if x = valid_pid?(path)
+          return path if pid && path == pid && x == $$
+          if x == reexec_pid && pid =~ /\.oldbin\z/
+            logger.warn("will not set pid=#{path} while reexec-ed "\
+                        "child is running PID:#{x}")
+            return
+          end
+          raise ArgumentError, "Already running on PID:#{x} " \
+                               "(or pid=#{path} is stale)"
+        end
+      end
+      unlink_pid_safe(pid) if pid
+
+      if path
+        fp = begin
+          tmp = "#{File.dirname(path)}/#{rand}.#$$"
+          File.open(tmp, File::RDWR|File::CREAT|File::EXCL, 0644)
+        rescue Errno::EEXIST
+          retry
+        end
+        fp.syswrite("#$$\n")
+        File.rename(fp.path, path)
+        fp.close
+      end
+      @pid = path
+    end
 
     # wait for a signal hander to wake us up and then consume the pipe
     def master_sleep(sec)
